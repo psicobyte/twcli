@@ -8,7 +8,7 @@ def main(argv):
     imagen= ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hi:", ["help", "image="])
+        param, args = getopt.getopt(argv, "hi:u:", ["help", "image=", "user="])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
 
@@ -18,6 +18,9 @@ def main(argv):
 
         elif opt in ("-i", "--image"):
             imagen = arg
+
+        elif opt in ("-u", "--user"):
+            show_user(arg)
 
     if len(args) > 0:
         if len(args[0]) < 141:
@@ -68,6 +71,23 @@ def show_my_timeline(num):
     		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
     	else:
     		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+
+
+def show_user(user):
+
+    api = login_api()
+
+    s = api.get_user(user)
+    print '\033[1;31m' + unicode(user) + '\033[0m ' + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
+    print unicode(s.name)
+    print unicode(s.description)
+    print "Lugar: \t\t" + unicode(s.location)
+    print "Imagen: \t" + unicode(s.profile_image_url)
+    print "Sigue/Seguido: " + unicode(s.friends_count) + "/" + unicode(s.followers_count)
+    print "Idioma: \t" + unicode(s.lang)
+    print "Favs: \t\t" + unicode(s.favourites_count)
+    print "Listed: \t" + unicode(s.listed_count)
+    sys.exit()
 
 
 def show_error(error):
