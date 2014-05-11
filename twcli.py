@@ -64,7 +64,10 @@ def show_my_timeline(num):
     api = login_api()
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
-        print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+        if hasattr(s, 'retweeted_status'):
+    		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+    	else:
+    		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
 def show_error(error):
