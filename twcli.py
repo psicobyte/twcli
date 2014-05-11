@@ -64,7 +64,7 @@ def show_my_timeline(num):
     api = login_api()
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
-        print unicode(s.user.screen_name) + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+        print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
 def show_error(error):
