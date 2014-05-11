@@ -20,7 +20,7 @@ def main(argv):
 
     for opt, arg in param:
         if opt in ("-h", "--help"):
-            show_error("AYUDA")
+            show_help()
 
         elif opt in ("-i", "--image"):
             imagen = arg
@@ -103,8 +103,6 @@ def show_error(error):
     
     print error
 
-    print "USO: Bla bla bla bla"
-
     sys.exit()
 
 def text_color(color):
@@ -122,6 +120,27 @@ def text_color(color):
 
     return code_color
 
+
+def show_help():
+
+    print u" "
+    print u"\ttwcli.py [opciones] [mensaje]"
+    print u" "
+    print u"\tSi se invoca sin parámetros, mostrará el timeline del usaurio."
+    print u"\tSi hay un mensaje, lo envía como tweet."
+    print u" "
+    print u"\t-h, --help"
+    print u"\t\tMuestra este texto de ayuda."
+    print u" "
+    print u"\t-n, --nocolor"
+    print u"\t\tDesactiva el uso de color."
+    print u" "
+    print u"\t-i, --image"
+    print u"\t\tDebe ir seguido del path de un archivo. Adjunta ese archivo al tweet."
+    print u" "
+    print u"\t-u, --user"
+    print u"\t\tDebe ir seguido de un nombre o ID de usaurio. Muestra información de ese usuario."
+    sys.exit()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
