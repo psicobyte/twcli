@@ -8,10 +8,13 @@ def main(argv):
     # http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
+    global color_schema
+    color_schema = "Red" 
+    
     imagen= ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hi:u:", ["help", "image=", "user="])
+        param, args = getopt.getopt(argv, "hni:u:", ["help", "image=", "user=", "nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
 
@@ -21,6 +24,9 @@ def main(argv):
 
         elif opt in ("-i", "--image"):
             imagen = arg
+
+        elif opt in ("-n", "--nocolor"):
+            color_schema = "None" 
 
         elif opt in ("-u", "--user"):
             show_user(arg)
@@ -71,9 +77,9 @@ def show_my_timeline(num):
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
         if hasattr(s, 'retweeted_status'):
-    		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+    		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
     	else:
-    		print '\033[1;31m' + unicode(s.user.screen_name) + '\033[0m ' + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+    		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
 def show_user(user):
@@ -81,7 +87,7 @@ def show_user(user):
     api = login_api()
 
     s = api.get_user(user)
-    print '\033[1;31m' + unicode(user) + '\033[0m ' + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
+    print text_color("Strong") + unicode(user) + text_color("Normal") + " " + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
     print unicode(s.name)
     print unicode(s.description)
     print "Lugar: \t\t" + unicode(s.location)
@@ -100,6 +106,21 @@ def show_error(error):
     print "USO: Bla bla bla bla"
 
     sys.exit()
+
+def text_color(color):
+
+    if color_schema == "Red": 
+        if color == "Strong":
+            code_color= "\033[1;31m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
+
+    if color_schema == "None": 
+        code_color= ""
+
+    return code_color
 
 
 if __name__ == "__main__":
