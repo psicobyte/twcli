@@ -1,9 +1,12 @@
 #!/usr/bin/python
 #coding: utf-8
 
-import os, sys, getopt, tweepy, ConfigParser
+import os, sys, getopt, tweepy, ConfigParser, codecs, locale
 
 def main(argv):
+
+    # http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
+    sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
     imagen= ""
 
