@@ -25,7 +25,7 @@ def main(argv):
         else:
             show_error("Demasiado largo")
     else:
-        print "No hay texto"
+        show_my_timeline(10)
 
 
 def login_api():
@@ -58,6 +58,13 @@ def send_tweet(message,image=""):
         print "sale con imagen"
 #        api.update_with_media(image, status=message)
 
+
+def show_my_timeline(num):
+
+    api = login_api()
+
+    for s in tweepy.Cursor(api.home_timeline).items(num):
+        print s.id, s.user.screen_name, s.text
 
 
 def show_error(error):
