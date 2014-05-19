@@ -67,8 +67,6 @@ def login_api():
     home_dir_ini_hidden_file = os.path.join(os.path.expanduser("~"),".twcli")
     my_dir_ini_file = os.path.join(os.path.abspath(os.path.dirname(__file__)),"twcli.ini")
 
-
-
     if os.path.isfile(home_dir_ini_file):
         configfile = home_dir_ini_file
     elif os.path.isfile(home_dir_ini_hidden_file):
@@ -78,9 +76,6 @@ def login_api():
     else:
         show_error("Falta archivo INI")
         sys.exit()
-
-
-
 
     config = ConfigParser.ConfigParser()
     config.read(configfile)
@@ -97,7 +92,13 @@ def login_api():
     auth = tweepy.OAuthHandler(consumer_key,consumer_key_secret)
     auth.set_access_token(access_token,access_token_secret)
 
-    return tweepy.API(auth)
+    api = tweepy.API(auth)
+
+    if api.verify_credentials():
+        return api
+    else:
+        show_error("error de autorizacion")
+        sys.exit()
 
 
 def send_tweet(message,image=""):
