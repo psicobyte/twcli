@@ -17,10 +17,11 @@ def main(argv):
         param, args = getopt.getopt(argv, "hni:u:", ["help", "image=", "user=", "nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
-
+        sys.exit()
     for opt, arg in param:
         if opt in ("-h", "--help"):
             show_help()
+            sys.exit()
 
         elif opt in ("-i", "--image"):
             imagen = arg
@@ -30,12 +31,14 @@ def main(argv):
 
         elif opt in ("-u", "--user"):
             show_user(arg)
+            sys.exit()
 
     if len(args) > 0:
         if len(args[0]) < 141:
             send_tweet(args[0],imagen)
         else:
             show_error("Demasiado largo")
+            sys.exit()
     else:
         show_my_timeline(10)
 
@@ -64,11 +67,11 @@ def send_tweet(message,image=""):
     api = login_api()
 
     if image == "":
-        print "Sale sin imagen"
-#        api.update_status(message)
+#        print "Sale sin imagen"
+        api.update_status(message)
     else:
-        print "sale con imagen"
-#        api.update_with_media(image, status=message)
+#        print "sale con imagen"
+        api.update_with_media(image, status=message)
 
 
 def show_my_timeline(num):
@@ -76,6 +79,17 @@ def show_my_timeline(num):
     api = login_api()
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
+        if hasattr(s, 'retweeted_status'):
+    		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+    	else:
+    		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+
+
+def show_timeline(user,num):
+
+    api = login_api()
+    
+    for s in tweepy.Cursor(api.user_timeline, user_id= user).items(num):
         if hasattr(s, 'retweeted_status'):
     		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
     	else:
@@ -96,14 +110,14 @@ def show_user(user):
     print "Idioma: \t" + unicode(s.lang)
     print "Favs: \t\t" + unicode(s.favourites_count)
     print "Listed: \t" + unicode(s.listed_count)
-    sys.exit()
+
+    show_timeline(user,5)
 
 
 def show_error(error):
     
     print error
 
-    sys.exit()
 
 def text_color(color):
 
@@ -140,7 +154,7 @@ def show_help():
     print u" "
     print u"\t-u, --user"
     print u"\t\tDebe ir seguido de un nombre o ID de usaurio. Muestra información de ese usuario."
-    sys.exit()
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
