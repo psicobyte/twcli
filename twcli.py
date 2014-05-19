@@ -63,8 +63,27 @@ def main(argv):
 
 def login_api():
 
+    home_dir_ini_file = os.path.join(os.path.expanduser("~"),"twcli.ini")
+    home_dir_ini_hidden_file = os.path.join(os.path.expanduser("~"),".twcli")
+    my_dir_ini_file = os.path.join(os.path.abspath(os.path.dirname(__file__)),"twcli.ini")
+
+
+
+    if os.path.isfile(home_dir_ini_file):
+        configfile = home_dir_ini_file
+    elif os.path.isfile(home_dir_ini_hidden_file):
+        configfile = home_dir_ini_hidden_file
+    elif os.path.isfile(my_dir_ini_file):
+        configfile = my_dir_ini_file
+    else:
+        show_error("Falta archivo INI")
+        sys.exit()
+
+
+
+
     config = ConfigParser.ConfigParser()
-    config.read("twcli.ini")
+    config.read(configfile)
 
     try:
         consumer_key= config.get("Keys", "consumer_key")
@@ -73,6 +92,7 @@ def login_api():
         access_token_secret= config.get("Keys", "access_token_secret")
     except:
         show_error("faltan datos de clave en CONFIG, LECHES")
+        sys.exit()
 
     auth = tweepy.OAuthHandler(consumer_key,consumer_key_secret)
     auth.set_access_token(access_token,access_token_secret)
