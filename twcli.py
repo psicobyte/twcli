@@ -154,7 +154,10 @@ def show_user(user):
     print "Favs: \t\t" + unicode(s.favourites_count)
     print "Listed: \t" + unicode(s.listed_count)
 
-    show_timeline(user,5)
+    if unicode(s.protected) != "True" or unicode(s.following) == "True":
+        show_timeline(user,5)
+    else:
+        print "PROTECTED"
 
 
 def show_error(error):
