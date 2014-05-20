@@ -32,7 +32,7 @@ def main(argv):
     imagen= ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hni:u:", ["help", "image=", "user=", "nocolor"])
+        param, args = getopt.getopt(argv, "hni:u:t:", ["help", "image=", "user=", "timeline=", "nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -49,6 +49,10 @@ def main(argv):
 
         elif opt in ("-u", "--user"):
             show_user(arg)
+            sys.exit()
+
+        elif opt in ("-t", "--timeline"):
+            show_timeline(arg,20)
             sys.exit()
 
     if len(args) > 0:
@@ -128,7 +132,7 @@ def show_timeline(user,num):
 
     api = login_api()
     
-    for s in tweepy.Cursor(api.user_timeline, user_id= user).items(num):
+    for s in tweepy.Cursor(api.user_timeline, id= user).items(num):
         if hasattr(s, 'retweeted_status'):
     		print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
     	else:
@@ -192,7 +196,12 @@ def show_help():
     print u"\t\tDebe ir seguido del path de un archivo. Adjunta ese archivo al tweet."
     print u" "
     print u"\t-u, --user"
-    print u"\t\tDebe ir seguido de un nombre o ID de usaurio. Muestra información de ese usuario."
+    print u"\t\tDebe ir seguido de un nombre (ID) de usaurio. Muestra información de ese usuario."
+    print u" "
+    print u"\t-t, --timeline"
+    print u"\t\tDebe ir seguido de un nombre (ID) de usaurio. Muestra el timeline de ese usuario."
+
+
 
 
 if __name__ == "__main__":
