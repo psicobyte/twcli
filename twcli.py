@@ -27,6 +27,10 @@ def main(argv):
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
     global color_schema
+
+    config = open_config()
+
+
     color_schema = "Red" 
     
     imagen= ""
@@ -48,24 +52,23 @@ def main(argv):
             color_schema = "None" 
 
         elif opt in ("-u", "--user"):
-            show_user(arg,5,1)
+            show_user(config,arg,5,1)
             sys.exit()
 
         elif opt in ("-t", "--timeline"):
-            show_user(arg,20,0)
+            show_user(config,arg,20,0)
             sys.exit()
 
     if len(args) > 0:
         if len(args[0]) < 141:
-            send_tweet(args[0],imagen)
+            send_tweet(config, args[0],imagen)
         else:
             show_error("Demasiado largo")
             sys.exit()
     else:
-        show_my_timeline(10)
+        show_my_timeline(config,10)
 
-
-def login_api():
+def open_config():
 
     home_dir_ini_file = os.path.join(os.path.expanduser("~"),"twcli.ini")
     home_dir_ini_hidden_file = os.path.join(os.path.expanduser("~"),".twcli")
@@ -82,7 +85,12 @@ def login_api():
         sys.exit()
 
     config = ConfigParser.ConfigParser()
+
     config.read(configfile)
+
+    return config
+
+def login_api(config):
 
     try:
         consumer_key= config.get("Keys", "consumer_key")
@@ -105,9 +113,9 @@ def login_api():
         sys.exit()
 
 
-def send_tweet(message,image=""):
+def send_tweet(config, message,image=""):
 
-    api = login_api()
+    api = login_api(config)
 
     if image == "":
 #        print "Sale sin imagen"
@@ -117,9 +125,9 @@ def send_tweet(message,image=""):
         api.update_with_media(image, status=message)
 
 
-def show_my_timeline(num):
+def show_my_timeline(config, num):
 
-    api = login_api()
+    api = login_api(config)
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
         if hasattr(s, 'retweeted_status'):
@@ -128,9 +136,9 @@ def show_my_timeline(num):
             print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
-def show_user(user,num,view_details_user=0):
+def show_user(config,user,num,view_details_user=0):
 
-    api = login_api()
+    api = login_api(config)
 
     s = api.get_user(user)
 
