@@ -128,17 +128,6 @@ def show_my_timeline(num):
             print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
-def show_timeline(user,num):
-
-    api = login_api()
-    
-    for s in tweepy.Cursor(api.user_timeline, id= user).items(num):
-        if hasattr(s, 'retweeted_status'):
-            print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
-        else:
-            print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
-
-
 def show_user(user,num,view_details_user=0):
 
     api = login_api()
