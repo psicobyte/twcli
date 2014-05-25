@@ -144,9 +144,9 @@ def show_my_timeline(config, num):
 
     for s in tweepy.Cursor(api.home_timeline).items(num):
         if hasattr(s, 'retweeted_status'):
-            print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
         else:
-            print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
 def show_user(config,user,num,view_details_user=0):
@@ -156,7 +156,7 @@ def show_user(config,user,num,view_details_user=0):
     s = api.get_user(user)
 
     if view_details_user == 1:
-        print text_color("Strong") + unicode(user) + text_color("Normal") + " " + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
+        print text_color(config,"Strong") + unicode(user) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
         print unicode(s.name)
         print unicode(s.description)
         print "Lugar: \t\t" + unicode(s.location)
@@ -169,9 +169,9 @@ def show_user(config,user,num,view_details_user=0):
     if unicode(s.protected) != "True" or unicode(s.following) == "True":
         for s in tweepy.Cursor(api.user_timeline, id= user).items(num):
             if hasattr(s, 'retweeted_status'):
-                print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
             else:
-                print text_color("Strong") + unicode(s.user.screen_name) + text_color("Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
     else:
         print "PROTECTED"
 
@@ -181,9 +181,9 @@ def show_error(error):
     print error
 
 
-def text_color(color):
+def text_color(config,color):
 
-    if color_schema == "Red": 
+    if config.get("Preferences", "color_schema").lower() == "red": 
         if color == "Strong":
             code_color= "\033[1;31m"
         elif color == "Normal":
@@ -191,8 +191,51 @@ def text_color(color):
         else:
             code_color= ""
 
-    if color_schema == "None": 
+    elif config.get("Preferences", "color_schema").lower() == "green": 
+        if color == "Strong":
+            code_color= "\033[1;32m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
+
+    elif config.get("Preferences", "color_schema").lower() == "blue": 
+        if color == "Strong":
+            code_color= "\033[1;34m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
+
+
+    elif config.get("Preferences", "color_schema").lower() == "purple": 
+        if color == "Strong":
+            code_color= "\033[1;35m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
+
+
+    elif config.get("Preferences", "color_schema").lower() == "cyan": 
+        if color == "Strong":
+            code_color= "\033[1;36m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
+
+
+    elif config.get("Preferences", "color_schema").lower() == "none": 
         code_color= ""
+
+    else:
+        if color == "Strong":
+            code_color= "\033[1;31m"
+        elif color == "Normal":
+            code_color= "\033[0m"
+        else:
+            code_color= ""
 
     return code_color
 
