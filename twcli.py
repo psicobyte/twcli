@@ -47,11 +47,12 @@ def main(argv):
             config.set("Preferences", "color_schema", "none") 
 
         elif opt in ("-u", "--user"):
-            show_user(config,arg,5,1)
+            config.set("Preferences", "tweets_per_page", "5")
+            show_user(config,arg,1)
             sys.exit()
 
         elif opt in ("-t", "--timeline"):
-            show_user(config,arg,20,0)
+            show_user(config,arg,0)
             sys.exit()
 
     if len(args) > 0:
@@ -144,7 +145,7 @@ def show_my_timeline(config):
             print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
 
 
-def show_user(config,user,num,view_details_user=0):
+def show_user(config,user,view_details_user=0):
 
     api = login_api(config)
 
@@ -162,7 +163,7 @@ def show_user(config,user,num,view_details_user=0):
         print "Listed: \t" + unicode(s.listed_count)
 
     if unicode(s.protected) != "True" or unicode(s.following) == "True":
-        for s in tweepy.Cursor(api.user_timeline, id= user).items(num):
+        for s in tweepy.Cursor(api.user_timeline, id= user).items(config.getint("Preferences", "tweets_per_page")):
             if hasattr(s, 'retweeted_status'):
                 print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
             else:
