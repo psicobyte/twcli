@@ -26,13 +26,8 @@ def main(argv):
     # http://stackoverflow.com/questions/4545661/unicodedecodeerror-when-redirecting-to-file
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
 
-    global color_schema
-
     config = open_config()
 
-
-    color_schema = "Red" 
-    
     imagen= ""
 
     try:                                
@@ -49,7 +44,7 @@ def main(argv):
             imagen = arg
 
         elif opt in ("-n", "--nocolor"):
-            color_schema = "None" 
+            config.set("Preferences", "color_schema", "none") 
 
         elif opt in ("-u", "--user"):
             show_user(config,arg,5,1)
@@ -207,7 +202,6 @@ def text_color(config,color):
         else:
             code_color= ""
 
-
     elif config.get("Preferences", "color_schema").lower() == "purple": 
         if color == "Strong":
             code_color= "\033[1;35m"
@@ -216,7 +210,6 @@ def text_color(config,color):
         else:
             code_color= ""
 
-
     elif config.get("Preferences", "color_schema").lower() == "cyan": 
         if color == "Strong":
             code_color= "\033[1;36m"
@@ -224,7 +217,6 @@ def text_color(config,color):
             code_color= "\033[0m"
         else:
             code_color= ""
-
 
     elif config.get("Preferences", "color_schema").lower() == "none": 
         code_color= ""
