@@ -61,7 +61,7 @@ def main(argv):
             show_error("Demasiado largo")
             sys.exit()
     else:
-        show_my_timeline(config,10)
+        show_my_timeline(config)
 
 def open_config():
 
@@ -133,11 +133,11 @@ def send_tweet(config, message,image=""):
         api.update_with_media(image, status=message)
 
 
-def show_my_timeline(config, num):
+def show_my_timeline(config):
 
     api = login_api(config)
 
-    for s in tweepy.Cursor(api.home_timeline).items(num):
+    for s in tweepy.Cursor(api.home_timeline).items(config.getint("Preferences", "tweets_per_page")):
         if hasattr(s, 'retweeted_status'):
             print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
         else:
