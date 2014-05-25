@@ -88,6 +88,19 @@ def open_config():
 
     config.read(configfile)
 
+    if not config.has_section("Preferences"):
+        config.add_section("Preferences")
+
+    if not config.has_option("Preferences", "tweets_per_page"):
+        config.set("Preferences", "tweets_per_page", "20")
+    if not isinstance(config.get("Preferences", "tweets_per_page"),int):
+        config.set("Preferences", "tweets_per_page", "20")
+
+    if not config.has_option("Preferences", "color_schema"):
+        config.set("Preferences", "color_schema", "red")
+    if not config.get("Preferences", "color_schema"):
+        config.set("Preferences", "color_schema", "red")
+
     return config
 
 def login_api(config):
