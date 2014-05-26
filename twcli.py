@@ -64,7 +64,11 @@ def main(argv):
     else:
         show_my_timeline(config)
 
+
 def open_config():
+    """Busca y abre un archivo INI para extraer las contraseñas y la configuración
+    Por orden de preferencia, busca el archivo en /home/USER/twcli.ini, en /home/USER/.twcli y en twcli.ini
+    """ 
 
     home_dir_ini_file = os.path.join(os.path.expanduser("~"),"twcli.ini")
     home_dir_ini_hidden_file = os.path.join(os.path.expanduser("~"),".twcli")
@@ -99,7 +103,9 @@ def open_config():
 
     return config
 
+
 def login_api(config):
+    """Se loguea en twitter mediante OAuth con las claves extraídas del archivo de configuración"""
 
     try:
         consumer_key= config.get("Keys", "consumer_key")
@@ -123,6 +129,7 @@ def login_api(config):
 
 
 def send_tweet(config, message,image=""):
+    """Envía un tweet"""
 
     api = login_api(config)
 
@@ -135,6 +142,7 @@ def send_tweet(config, message,image=""):
 
 
 def show_my_timeline(config):
+    """Muestra el timeline del usuario logeado (los tweets de aquellos alos que sigue etc)"""
 
     api = login_api(config)
 
@@ -146,6 +154,7 @@ def show_my_timeline(config):
 
 
 def show_user(config,user,view_details_user=0):
+    """Muestra detalles de un usuario (si view_details_user=1) y sus últimos tweets"""
 
     api = login_api(config)
 
@@ -173,11 +182,13 @@ def show_user(config,user,view_details_user=0):
 
 
 def show_error(error):
+    """Muestra los errores, o los mostrará cuando esta función esté hecha"""
     
     print error
 
 
 def text_color(config,color):
+    """Asigna códigos de color a cada tipo de texto en función de la configuración"""
 
     if config.get("Preferences", "color_schema").lower() == "red": 
         if color == "Strong":
@@ -234,6 +245,7 @@ def text_color(config,color):
 
 
 def show_help():
+    """Muestra un texto de ayuda básico"""
 
     print u" "
     print u"\ttwcli.py [opciones] [mensaje]"
