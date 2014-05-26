@@ -31,7 +31,7 @@ def main(argv):
     imagen= ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hni:u:t:", ["help", "image=", "user=", "timeline=", "nocolor"])
+        param, args = getopt.getopt(argv, "hni:u:r:t:", ["help", "image=", "user=", "retweet=", "timeline=", "nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -49,6 +49,10 @@ def main(argv):
         elif opt in ("-u", "--user"):
             config.set("Preferences", "tweets_per_page", "5")
             show_user(config,arg,1)
+            sys.exit()
+
+        elif opt in ("-r", "--retweet"):
+            send_retweet(config,arg)
             sys.exit()
 
         elif opt in ("-t", "--timeline"):
@@ -139,6 +143,16 @@ def send_tweet(config, message,image=""):
     else:
 #        print "sale con imagen"
         api.update_with_media(image, status=message)
+
+
+def send_retweet(config,id):
+    """retuitea el tuit que se le pasa como id"""
+
+    api = login_api(config)
+    try:    
+        api.retweet(id)
+    except:
+        show_error("no retuit")
 
 
 def show_my_timeline(config):
