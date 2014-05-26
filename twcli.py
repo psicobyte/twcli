@@ -28,10 +28,11 @@ def main(argv):
 
     config = open_config()
 
-    imagen= ""
+    imagen = ""
+    reply = ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hni:u:r:t:", ["help", "image=", "user=", "retweet=", "timeline=", "nocolor"])
+        param, args = getopt.getopt(argv, "hnR:i:u:r:t:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -42,6 +43,9 @@ def main(argv):
 
         elif opt in ("-i", "--image"):
             imagen = arg
+
+        elif opt in ("-R", "--reply"):
+            reply = arg
 
         elif opt in ("-n", "--nocolor"):
             config.set("Preferences", "color_schema", "none") 
@@ -60,11 +64,7 @@ def main(argv):
             sys.exit()
 
     if len(args) > 0:
-        if len(args[0]) < 141:
-            send_tweet(config, args[0],imagen)
-        else:
-            show_error("Demasiado largo")
-            sys.exit()
+        send_tweet(config, args[0], imagen, reply)
     else:
         show_my_timeline(config)
 
@@ -132,17 +132,35 @@ def login_api(config):
         sys.exit()
 
 
-def send_tweet(config, message,image=""):
+def send_tweet(config, message, image="", reply=""):
     """Envía un tweet"""
 
     api = login_api(config)
 
+    message = message.decode('utf8')
+
+    if reply != "":
+
+        try:
+            s = api.get_status(reply)
+        except:
+            show_error("No se encuentra el tuit")
+            sys.exit()
+
+        message = "@" + s.user.screen_name + " " + message
+
+    if len(message) > 140:
+        print message
+        show_error("Demasiado largo")
+        sys.exit()
+
     if image == "":
-#        print "Sale sin imagen"
-        api.update_status(message)
+        print "Sale sin imagen:", message
+        api.update_status(message, in_reply_to_status_id=reply)
+
     else:
-#        print "sale con imagen"
-        api.update_with_media(image, status=message)
+        print "sale con imagen"
+        api.update_with_media(image, status=message, in_reply_to_status_id=reply)
 
 
 def send_retweet(config,id):
