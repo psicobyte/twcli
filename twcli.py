@@ -137,7 +137,7 @@ def send_tweet(config, message, image="", reply=""):
 
     api = login_api(config)
 
-    message = message.decode('utf8')
+    message = message.decode("utf8")
 
     if reply != "":
 
@@ -155,11 +155,11 @@ def send_tweet(config, message, image="", reply=""):
         sys.exit()
 
     if image == "":
-        print "Sale sin imagen:", message
+#        print "Sale sin imagen:", message
         api.update_status(message, in_reply_to_status_id=reply)
 
     else:
-        print "sale con imagen"
+#        print "sale con imagen"
         api.update_with_media(image, status=message, in_reply_to_status_id=reply)
 
 
@@ -179,10 +179,10 @@ def show_my_timeline(config):
     api = login_api(config)
 
     for s in tweepy.Cursor(api.home_timeline).items(config.getint("Preferences", "tweets_per_page")):
-        if hasattr(s, 'retweeted_status'):
-            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+        if hasattr(s, "retweeted_status"):
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
         else:
-            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.text)
 
 
 def show_user(config,user,view_details_user=0):
@@ -193,7 +193,7 @@ def show_user(config,user,view_details_user=0):
     s = api.get_user(user)
 
     if view_details_user == 1:
-        print text_color(config,"Strong") + unicode(user) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + '] (' + unicode(s.created_at) + ')'
+        print text_color(config,"Strong") + unicode(user) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "] (" + unicode(s.created_at) + ")"
         print unicode(s.name)
         print unicode(s.description)
         print "Lugar: \t\t" + unicode(s.location)
@@ -205,10 +205,10 @@ def show_user(config,user,view_details_user=0):
 
     if unicode(s.protected) != "True" or unicode(s.following) == "True":
         for s in tweepy.Cursor(api.user_timeline, id= user).items(config.getint("Preferences", "tweets_per_page")):
-            if hasattr(s, 'retweeted_status'):
-                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' << ' + unicode(s.retweeted_status.user.screen_name) + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.retweeted_status.text)
+            if hasattr(s, "retweeted_status"):
+                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
             else:
-                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + '[' + unicode(s.id) + ']' + ' (' + unicode(s.created_at) + ')' + '\n' + unicode(s.text)
+                print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.text)
     else:
         print "PROTECTED"
 
