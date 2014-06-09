@@ -354,6 +354,9 @@ def show_help():
     print u"\t-n, --nocolor"
     print u"\t\tDesactiva el uso de color."
     print u" "
+    print u"\t-R, --reply"
+    print u"\t\tDebe ir seguido del ID de un tweet. El [mensaje] se enviará como respuesta a ese tweet."
+    print u" "
     print u"\t-i, --image"
     print u"\t\tDebe ir seguido del path de un archivo. Adjunta ese archivo al tweet."
     print u" "
@@ -362,6 +365,12 @@ def show_help():
     print u" "
     print u"\t-t, --timeline"
     print u"\t\tDebe ir seguido de un nombre (ID) de usaurio. Muestra el timeline de ese usuario."
+    print u" "
+    print u"\t-r, --retweet"
+    print u"\t\tDebe ir seguido del ID de un tweet. Retuitea ese tuit."
+    print u" "
+    print u"\t-f, --fav"
+    print u"\t\tDebe ir seguido del ID de un tweet. Marca ese tweet como favorito."
 
 
 if __name__ == "__main__":
