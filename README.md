@@ -9,6 +9,8 @@ TwCLI
 
 TwCLI es un (otro) cliente de twitter en línea de comandos.
 
+TwCLI usa la librería [Tweepy](http://www.tweepy.org/) para acceder a la API de Twitter.
+
 TwCLI necesita una api key de twitter. Se trata de un conjunto de cuatro claves (dos de aplicación y dos de usaurio) que se obtienen al dar de alta una aplicación aquí: [https://dev.twitter.com/apps/new](https://dev.twitter.com/apps/new)
 
 TwCLI usa un archivo INI para almacenar las contraseñas y las opciones de configuración
