@@ -1,17 +1,17 @@
-Twcli
+TwCLI
 =====
 
 ##ADVERTENCIA
 
-**Twcli está aún en fase pre-alpha!** 
+**TwCLI está aún en fase pre-alpha!** 
 
 ##Descripción
 
-Twcli es un (otro) cliente de twitter en línea de comandos.
+TwCLI es un (otro) cliente de twitter en línea de comandos.
 
-Twcli necesita una api key de twitter. Se trata de un conjunto de cuatro claves (dos de aplicación y dos de usaurio) que se obtienen al dar de alta una aplicación aquí: [https://dev.twitter.com/apps/new](https://dev.twitter.com/apps/new)
+TwCLI necesita una api key de twitter. Se trata de un conjunto de cuatro claves (dos de aplicación y dos de usaurio) que se obtienen al dar de alta una aplicación aquí: [https://dev.twitter.com/apps/new](https://dev.twitter.com/apps/new)
 
-Twcli usa un archivo INI para almacenar las contraseñas y las opciones de configuración
+TwCLI usa un archivo INI para almacenar las contraseñas y las opciones de configuración
 
 Por orden de preferencia, buscará el archivo en
 
@@ -50,7 +50,7 @@ Ver menú de ayuda:
 
 El archivo twcli.ini contiene las claves de acceso a twitter y algunas opciones de configuración.
 
-Twcli buscará el archivo en "/home/USER/twcli.ini". Si no lo encuentra ahí, lo buscará en "/home/USER/.twcli" y, si tampoco está ahí, lo buscará en el directorio de la propia aplicación con el nombre de "twcli.ini".
+TwCLI buscará el archivo en "/home/USER/twcli.ini". Si no lo encuentra ahí, lo buscará en "/home/USER/.twcli" y, si tampoco está ahí, lo buscará en el directorio de la propia aplicación con el nombre de "twcli.ini".
 
 Dentro de este archivo hay dos secciones:
 
@@ -65,17 +65,19 @@ Esta sección contiene las claves del usaurio (se pueden obtener de [https://dev
 
 ###Preferences
 
+Esta sección contiene opciones de configuración que modifican el funcionamiento de TwCLI
+
 * tweets_per_page: Número de tuits que se mostrarán en una página (El valor por defecto es 20)
 
 * color_schema: Color que se usará para resaltar el texto. Las opciones son:
-..* red
-..* green
-..* blue
-..* purple
-..* cyan
-..* none
+  * red
+  * green
+  * blue
+  * purple
+  * cyan
+  * none
 
-El valor por defecto es "red"
+  El valor por defecto es "red"
 
 * ask_confirmation: Si tiene el valor "yes" pedirá confirmación antes de enviar un tweet
 
