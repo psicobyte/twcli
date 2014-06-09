@@ -171,7 +171,7 @@ def send_tweet(config, message, image="", reply=""):
             if confirma.lower() == "y" or confirma == "":
                 api.update_with_media(image, status=message, in_reply_to_status_id=reply)
             else:
-                print "Cancelled"
+                print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
         else:
             api.update_with_media(image, status=message, in_reply_to_status_id=reply)
 
@@ -180,10 +180,21 @@ def send_retweet(config,id):
     """retuitea el tuit que se le pasa como id"""
 
     api = login_api(config)
-    try:    
-        api.retweet(id)
-    except:
-        show_error("no retuit")
+
+    if config.get("Preferences", "ask_confirmation").lower() == "yes":
+        confirma = raw_input(text_color(config,"Strong") + "Retweet? [Y/n]" + text_color(config,"Normal"))
+        if confirma.lower() == "y" or confirma == "":
+            try:
+                api.retweet(id)
+            except:
+                show_error("no retuit")
+        else:
+            print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
+    else:
+        try:
+            api.retweet(id)
+        except:
+            show_error("no retuit")
 
 
 def show_my_timeline(config):
