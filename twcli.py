@@ -32,7 +32,7 @@ def main(argv):
     reply = ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hnR:i:u:r:t:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "nocolor"])
+        param, args = getopt.getopt(argv, "hnR:i:u:r:t:f:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "fav=","nocolor"])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -57,6 +57,10 @@ def main(argv):
 
         elif opt in ("-r", "--retweet"):
             send_retweet(config,arg)
+            sys.exit()
+
+        elif opt in ("-f", "--fav"):
+            favorite(config,arg)
             sys.exit()
 
         elif opt in ("-t", "--timeline"):
@@ -305,6 +309,34 @@ def text_color(config,color):
             code_color= ""
 
     return code_color
+
+
+def favorite(config, id):
+    """retuitea el tuit que se le pasa como id"""
+
+    api = login_api(config)
+
+    if config.get("Preferences", "ask_confirmation").lower() == "yes":
+
+        try:
+            s = api.get_status(id)
+        except:
+            show_error("el tuit a favear no existe")
+            sys.exit()
+
+        confirma = raw_input(unicode(s.text) + text_color(config,"Strong") + " Fav? [Y/n]" + text_color(config,"Normal"))
+        if confirma.lower() == "y" or confirma == "":
+            try:
+                api.create_favorite(id)
+            except:
+                show_error("no Fav")
+        else:
+            print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
+    else:
+        try:
+            api.create_favorite(id)
+        except:
+            show_error("no Fav")
 
 
 def show_help():
