@@ -182,7 +182,10 @@ def send_retweet(config,id):
     api = login_api(config)
 
     if config.get("Preferences", "ask_confirmation").lower() == "yes":
-        confirma = raw_input(text_color(config,"Strong") + "Retweet? [Y/n]" + text_color(config,"Normal"))
+
+        s = api.get_status(id)
+
+        confirma = raw_input(unicode(s.text) + text_color(config,"Strong") + " Retweet? [Y/n]" + text_color(config,"Normal"))
         if confirma.lower() == "y" or confirma == "":
             try:
                 api.retweet(id)
@@ -323,8 +326,6 @@ def show_help():
     print u" "
     print u"\t-t, --timeline"
     print u"\t\tDebe ir seguido de un nombre (ID) de usaurio. Muestra el timeline de ese usuario."
-
-
 
 
 if __name__ == "__main__":
