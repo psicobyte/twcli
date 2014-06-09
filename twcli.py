@@ -155,12 +155,25 @@ def send_tweet(config, message, image="", reply=""):
         sys.exit()
 
     if image == "":
-#        print "Sale sin imagen:", message
-        api.update_status(message, in_reply_to_status_id=reply)
+
+        if config.get("Preferences", "ask_confirmation").lower() == "yes":
+            confirma = raw_input( message + " " + text_color(config,"Strong") + "Send? [Y/n]" + text_color(config,"Normal"))
+            if confirma.lower() == "y" or confirma == "":
+                api.update_status(message, in_reply_to_status_id=reply)
+            else:
+                print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
+        else:
+            api.update_status(message, in_reply_to_status_id=reply)
 
     else:
-#        print "sale con imagen"
-        api.update_with_media(image, status=message, in_reply_to_status_id=reply)
+        if config.get("Preferences", "ask_confirmation").lower() == "yes":
+            confirma = raw_input( message + " " + text_color(config,"Strong") + "Send? [Y/n]" + text_color(config,"Normal"))
+            if confirma.lower() == "y" or confirma == "":
+                api.update_with_media(image, status=message, in_reply_to_status_id=reply)
+            else:
+                print "Cancelled"
+        else:
+            api.update_with_media(image, status=message, in_reply_to_status_id=reply)
 
 
 def send_retweet(config,id):
