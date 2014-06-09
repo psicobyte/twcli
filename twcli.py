@@ -183,7 +183,11 @@ def send_retweet(config,id):
 
     if config.get("Preferences", "ask_confirmation").lower() == "yes":
 
-        s = api.get_status(id)
+        try:
+            s = api.get_status(id)
+        except:
+            show_error("el tuit original no existe")
+            sys.exit()
 
         confirma = raw_input(unicode(s.text) + text_color(config,"Strong") + " Retweet? [Y/n]" + text_color(config,"Normal"))
         if confirma.lower() == "y" or confirma == "":
