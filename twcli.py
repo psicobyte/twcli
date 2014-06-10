@@ -101,7 +101,7 @@ def open_config():
 
     if not config.has_option("Preferences", "tweets_per_page"):
         config.set("Preferences", "tweets_per_page", "20")
-    if not isinstance(config.get("Preferences", "tweets_per_page"),int):
+    if not config.get("Preferences", "tweets_per_page").isdigit:
         config.set("Preferences", "tweets_per_page", "20")
 
     if not config.has_option("Preferences", "color_schema"):
