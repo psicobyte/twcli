@@ -273,16 +273,16 @@ def show_tweet(config, id):
 
     reply = s.in_reply_to_status_id_str
 
-    Lista = []
+    list_previous_tweets = []
 
     while reply != None:
         s2 = api.get_status(reply)
-        Lista.append("   " + text_color(config,"Strong") + unicode(s2.user.screen_name) + text_color(config,"Normal") + " " + unicode(s2.text))
+        list_previous_tweets.append("   " + text_color(config,"Middle") + unicode(s2.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s2.id) + "]" + " (" + unicode(s2.created_at) + ")" + "\n" + "   " + unicode(s2.text))
         reply = s2.in_reply_to_status_id_str
 
-    Lista.reverse()
+    list_previous_tweets.reverse()
 
-    for elem in Lista:
+    for elem in list_previous_tweets:
         print elem
 
 
@@ -293,11 +293,6 @@ def show_tweet(config, id):
 
     print text_color(config,"Strong") + "Favs: " + text_color(config,"Normal") + str(s.favorite_count)
     print text_color(config,"Strong") + "RTS:  " + text_color(config,"Normal") + str(s.retweet_count)
-
-
-
-
-
 
 def show_error(error):
     """Muestra los errores, o los mostrará cuando esta función esté hecha"""
