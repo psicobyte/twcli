@@ -270,6 +270,22 @@ def show_tweet(config, id):
         show_error("el tuit buscado no existe")
         sys.exit()
 
+
+    reply = s.in_reply_to_status_id_str
+
+    Lista = []
+
+    while reply != None:
+        s2 = api.get_status(reply)
+        Lista.append("   " + text_color(config,"Strong") + unicode(s2.user.screen_name) + text_color(config,"Normal") + " " + unicode(s2.text))
+        reply = s2.in_reply_to_status_id_str
+
+    Lista.reverse()
+
+    for elem in Lista:
+        print elem
+
+
     if hasattr(s, "retweeted_status"):
         print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
     else:
@@ -277,6 +293,10 @@ def show_tweet(config, id):
 
     print text_color(config,"Strong") + "Favs: " + text_color(config,"Normal") + str(s.favorite_count)
     print text_color(config,"Strong") + "RTS:  " + text_color(config,"Normal") + str(s.retweet_count)
+
+
+
+
 
 
 def show_error(error):
