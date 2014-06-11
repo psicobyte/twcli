@@ -32,7 +32,7 @@ def main(argv):
     reply = ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hnR:i:u:r:t:f:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "fav=","nocolor"])
+        param, args = getopt.getopt(argv, "hnR:i:u:r:t:f:v:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "fav=","nocolor","view="])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -57,6 +57,10 @@ def main(argv):
 
         elif opt in ("-r", "--retweet"):
             send_retweet(config,arg)
+            sys.exit()
+
+        elif opt in ("-v", "--view"):
+            show_tweet(config,arg)
             sys.exit()
 
         elif opt in ("-f", "--fav"):
@@ -246,6 +250,26 @@ def show_user(config,user,view_details_user=0):
                 print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.text)
     else:
         print "PROTECTED"
+
+
+def show_tweet(config, id):
+    """Muestra detalles de un tweet"""
+
+    api = login_api(config)
+
+    try:
+        s = api.get_status(id)
+    except:
+        show_error("el tuit buscado no existe")
+        sys.exit()
+
+    if hasattr(s, "retweeted_status"):
+        print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
+    else:
+        print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.text)
+
+    print text_color(config,"Strong") + "Favs: " + text_color(config,"Normal") + str(s.favorite_count)
+    print text_color(config,"Strong") + "RTS:  " + text_color(config,"Normal") + str(s.retweet_count)
 
 
 def show_error(error):
