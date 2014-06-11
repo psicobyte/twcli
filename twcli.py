@@ -311,6 +311,8 @@ def text_color(config,color):
     if config.get("Preferences", "color_schema").lower() == "red": 
         if color == "Strong":
             code_color= "\033[1;31m"
+        elif color == "Middle":
+            code_color= "\033[0;31m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
@@ -319,6 +321,8 @@ def text_color(config,color):
     elif config.get("Preferences", "color_schema").lower() == "green": 
         if color == "Strong":
             code_color= "\033[1;32m"
+        elif color == "Middle":
+            code_color= "\033[0;32m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
@@ -327,6 +331,8 @@ def text_color(config,color):
     elif config.get("Preferences", "color_schema").lower() == "blue": 
         if color == "Strong":
             code_color= "\033[1;34m"
+        elif color == "Middle":
+            code_color= "\033[0;34m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
@@ -335,6 +341,8 @@ def text_color(config,color):
     elif config.get("Preferences", "color_schema").lower() == "purple": 
         if color == "Strong":
             code_color= "\033[1;35m"
+        elif color == "Middle":
+            code_color= "\033[0;35m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
@@ -343,6 +351,8 @@ def text_color(config,color):
     elif config.get("Preferences", "color_schema").lower() == "cyan": 
         if color == "Strong":
             code_color= "\033[1;36m"
+        elif color == "Middle":
+            code_color= "\033[0;36m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
@@ -354,6 +364,8 @@ def text_color(config,color):
     else:
         if color == "Strong":
             code_color= "\033[1;31m"
+        elif color == "Middle":
+            code_color= "\033[0;31m"
         elif color == "Normal":
             code_color= "\033[0m"
         else:
