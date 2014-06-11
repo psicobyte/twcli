@@ -174,15 +174,22 @@ def send_tweet(config, message, image="", reply=""):
             api.update_status(message, in_reply_to_status_id=reply)
 
     else:
-        if config.get("Preferences", "ask_confirmation").lower() == "yes":
-            confirma = raw_input( message + " " + text_color(config,"Strong") + "Send? [Y/n]" + text_color(config,"Normal"))
-            if confirma.lower() == "y" or confirma == "":
-                api.update_with_media(image, status=message, in_reply_to_status_id=reply)
-            else:
-                print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
-        else:
-            api.update_with_media(image, status=message, in_reply_to_status_id=reply)
 
+        path_image = os.path.abspath(image)
+
+        if os.path.isfile(path_image):
+
+            if config.get("Preferences", "ask_confirmation").lower() == "yes":
+                confirma = raw_input( message + " " + text_color(config,"Strong") + "Send? [Y/n]" + text_color(config,"Normal"))
+                if confirma.lower() == "y" or confirma == "":
+                    api.update_with_media(path_image, status=message, in_reply_to_status_id=reply)
+                else:
+                    print text_color(config,"Strong") + "Cancelled"  + text_color(config,"Normal")
+            else:
+                api.update_with_media(path_image, status=message, in_reply_to_status_id=reply)
+        else:
+            show_error("no se encuentra la imagen")
+            sys.exit()
 
 def send_retweet(config,id):
     """retuitea el tuit que se le pasa como id"""
