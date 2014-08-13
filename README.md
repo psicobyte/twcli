@@ -27,11 +27,11 @@ Ver tu propio timeline (tweets de gente que sigues o que te mencionan)
 
 `twcli.pl`
 
-Ver detalles de un usuaio:
+Ver detalles de un usuario:
 
 `twcli.pl -u Usuario`
 
-Ver timeline de un usuaio:
+Ver timeline de un usuario:
 
 `twcli.pl -t Usuario`
 
@@ -58,7 +58,7 @@ Dentro de este archivo hay dos secciones:
 
 ###Keys
 
-Esta sección contiene las claves del usaurio (se pueden obtener de [https://dev.twitter.com/apps/new](https://dev.twitter.com/apps/new)).
+Esta sección contiene las claves del usuario (se pueden obtener de [https://dev.twitter.com/apps/new](https://dev.twitter.com/apps/new)).
 
 * consumer_key: API key de Twitter
 * consumer_key_secret: API secret de Twitter
