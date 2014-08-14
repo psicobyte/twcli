@@ -32,7 +32,7 @@ def main(argv):
     reply = ""
 
     try:                                
-        param, args = getopt.getopt(argv, "hnR:i:u:r:t:f:v:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "fav=","nocolor","view="])
+        param, args = getopt.getopt(argv, "hnR:i:u:r:t:f:v:s:", ["help", "image=", "user=", "reply=", "retweet=", "timeline=", "fav=", "nocolor", "view=", "search="])
     except getopt.GetoptError:
         show_error("OOOOOH, parámetros")
         sys.exit()
@@ -69,6 +69,10 @@ def main(argv):
 
         elif opt in ("-t", "--timeline"):
             show_user(config,arg,0)
+            sys.exit()
+
+        elif opt in ("-s", "--search"):
+            search(config,arg)
             sys.exit()
 
     if len(args) > 0:
@@ -191,6 +195,7 @@ def send_tweet(config, message, image="", reply=""):
             show_error("no se encuentra la imagen")
             sys.exit()
 
+
 def send_retweet(config,id):
     """retuitea el tuit que se le pasa como id"""
 
@@ -220,11 +225,24 @@ def send_retweet(config,id):
 
 
 def show_my_timeline(config):
-    """Muestra el timeline del usuario logeado (los tweets de aquellos alos que sigue etc)"""
+    """Muestra el timeline del usuario logeado (los tweets de aquellos a los que sigue etc)"""
 
     api = login_api(config)
 
     for s in tweepy.Cursor(api.home_timeline).items(config.getint("Preferences", "tweets_per_page")):
+        if hasattr(s, "retweeted_status"):
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
+        else:
+            print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.text)
+
+
+def search(config,query):
+    """Buscar"""
+
+    query = query.decode("utf8")
+    api = login_api(config)
+
+    for s in tweepy.Cursor(api.search, q = query).items(config.getint("Preferences", "tweets_per_page")):
         if hasattr(s, "retweeted_status"):
             print text_color(config,"Strong") + unicode(s.user.screen_name) + text_color(config,"Normal") + " " + "[" + unicode(s.id) + "]" + " << " + unicode(s.retweeted_status.user.screen_name) + " (" + unicode(s.created_at) + ")" + "\n" + unicode(s.retweeted_status.text)
         else:
@@ -293,6 +311,7 @@ def show_tweet(config, id):
 
     print text_color(config,"Strong") + "Favs: " + text_color(config,"Normal") + str(s.favorite_count)
     print text_color(config,"Strong") + "RTS:  " + text_color(config,"Normal") + str(s.retweet_count)
+
 
 def show_error(error):
     """Muestra los errores, o los mostrará cuando esta función esté hecha"""
@@ -370,7 +389,7 @@ def text_color(config,color):
 
 
 def favorite(config, id):
-    """retuitea el tuit que se le pasa como id"""
+    """marca como favorito el tuit que se le pasa como id"""
 
     api = login_api(config)
 
@@ -432,6 +451,9 @@ def show_help():
     print u" "
     print u"\t-f, --fav"
     print u"\t\tDebe ir seguido del ID de un tweet. Marca ese tweet como favorito."
+    print u" "
+    print u"\t-s, --search"
+    print u"\t\tDebe ir seguido de una cadena. Busca esa cadena y muestra el resultado."
 
 
 if __name__ == "__main__":
