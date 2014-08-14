@@ -149,7 +149,7 @@ def send_tweet(config, message, image="", reply=""):
 
     api = login_api(config)
 
-    message = message.decode("utf8")
+    message = message.decode(sys.stdin.encoding)
 
     if reply != "":
 
@@ -239,7 +239,7 @@ def show_my_timeline(config):
 def search(config,query):
     """Buscar"""
 
-    query = query.decode("utf8")
+    query = query.decode(sys.stdin.encoding)
     api = login_api(config)
 
     for s in tweepy.Cursor(api.search, q = query).items(config.getint("Preferences", "tweets_per_page")):
