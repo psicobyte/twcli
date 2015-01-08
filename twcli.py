@@ -1,8 +1,6 @@
 #!/usr/bin/python
 #coding: utf-8
 
-#!/usr/bin/perl
-
 # CopyRight 2014 Allan Psicobyte (psicobyte@gmail.com)
 #
 # This program is free software: you can redistribute it and/or modify
