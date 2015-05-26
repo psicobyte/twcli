@@ -25,27 +25,27 @@ Por orden de preferencia, buscará el archivo en
 
 Ver tu propio timeline (tweets de gente que sigues o que te mencionan)
 
-`twcli.pl`
+`twcli.py`
 
 Ver detalles de un usuario:
 
-`twcli.pl -u Usuario`
+`twcli.py -u Usuario`
 
 Ver timeline de un usuario:
 
-`twcli.pl -t Usuario`
+`twcli.py -t Usuario`
 
 Enviar un tweet:
 
-`twcli.pl "texto del tweet"`
+`twcli.py "texto del tweet"`
 
 Enviar un tweet con una imagen adjunta;
 
-`twcli.pl -i "/ruta/a/la/imagen" "texto del tweet"`
+`twcli.py -i "/ruta/a/la/imagen" "texto del tweet"`
 
 Ver menú de ayuda:
 
-`twcli.pl -h`
+`twcli.py -h`
 
 
 ##twcli.ini
